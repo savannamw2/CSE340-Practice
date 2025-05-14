@@ -181,10 +181,6 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
 
-
-// When in development mode, start a WebSocket server for live reloading
-const mode = process.env.MODE;
-
 /**
  * Error Handling Middleware
     */
@@ -214,7 +210,7 @@ app.use((err, req, res, next) => {
         title: status === 404 ? 'Page Not Found' : 'Internal Server Error',
         error: err.message,
         stack: err.stack,
-        mode,
+        NODE_ENV,
         PORT
     };
 
