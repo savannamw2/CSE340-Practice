@@ -60,11 +60,15 @@ app.use((err, req, res, next) => {
 
     // Set default status and determine error type
     const status = err.status || 500;
+    const isDev = process.env.NODE_ENV === 'development';
+
+    // only show in dev mode
     const context = {
         title: status === 404 ? 'Page Not Found' : 'Internal Server Error',
-        error: err.message,
-        stack: err.stack
+        error: isDev ? err.message : null,
+        stack: isDev ? err.stack : null
     };
+
 
     // Render the appropriate template based on status code
     res.status(status).render(`errors/${status === 404 ? '404' : '500'}`, context);

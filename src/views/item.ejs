@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+    <main class="product-detail-container">
+        <a href="/products/<%= category %>" class="back-link">← Back to Category</a>
+
+        <div class="product-detail">
+            <img src="<%= product.image %>" alt="<%= product.name %>" class="detail-image">
+
+            <div class="detail-info">
+                <h1>
+                    <%= product.name %>
+                </h1>
+                <p class="detail-price">$<%= product.price.toFixed(2) %>
+                </p>
+                <p class="detail-description">
+                    <%= product.description %>
+                </p>
+
+                <div class="product-actions">
+                    <select class="size-selector">
+                        <option>Select Size</option>
+                        <option>Small</option>
+                        <option>Medium</option>
+                        <option>Large</option>
+                    </select>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
