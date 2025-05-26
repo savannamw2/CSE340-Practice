@@ -5,6 +5,9 @@ import { fileURLToPath } from 'url';
 // Import route handlers from their new locations
 import indexRoutes from './src/routes/index.js';
 import productsRoutes from './src/routes/products/index.js';
+import { setupDatabase, testConnection } from './src/models/setup.js';
+import { addNavigationData } from './src/middleware/index.js';
+
 
 // Import global middleware
 import { addGlobalData } from './src/middleware/index.js';
@@ -39,6 +42,9 @@ app.set('views', path.join(__dirname, 'src/views'));
  * Middleware
  */
 app.use(addGlobalData);
+
+// Add this after your other middleware (static files, etc.)
+app.use(addNavigationData);
 
 /**
  * Routes
@@ -99,6 +105,20 @@ if (NODE_ENV.includes('dev')) {
 }
 
 // Start the Express server on the specified port
-app.listen(PORT, () => {
-    console.log(`Server is running on http://127.0.0.1:${PORT}`);
-});
+// Test database connection and setup tables
+testConnection()
+    .then(() => setupDatabase())
+    .then(() => {
+        // Start your WebSocket server if you have one
+        // startWebSocketServer();
+
+        // Start the Express server
+        app.listen(PORT, () => {
+            console.log(`Server running on http://127.0.0.1:${PORT}`);
+            console.log('Database connected and ready');
+        });
+    })
+    .catch((error) => {
+        console.error('Failed to start server:', error.message);
+        process.exit(1);
+    });
