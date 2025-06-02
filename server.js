@@ -8,6 +8,9 @@ import productsRoutes from './src/routes/products/index.js';
 import { setupDatabase, testConnection } from './src/models/setup.js';
 import { addNavigationData } from './src/middleware/index.js';
 
+// Add this import with your other route imports
+import dashboardRoutes from './src/routes/dashboard/index.js';
+
 
 // Import global middleware
 import { addGlobalData } from './src/middleware/index.js';
@@ -45,6 +48,15 @@ app.use(addGlobalData);
 
 // Add this after your other middleware (static files, etc.)
 app.use(addNavigationData);
+
+// Middleware to parse JSON data in request body
+app.use(express.json());
+
+// Middleware to parse URL-encoded form data (like from a standard HTML form)
+app.use(express.urlencoded({ extended: true }));
+
+// Add this with your other route registrations
+app.use('/dashboard', dashboardRoutes);
 
 /**
  * Routes
